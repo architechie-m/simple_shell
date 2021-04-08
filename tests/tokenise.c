@@ -1,31 +1,53 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include "shell.h"
 
 /**
  * main - entry point, program starts here
- * @argc: Number of arguments
- * @argv: argument vector
- * Return: zero
+ * @ntokens: Number of tokens in an array
+ * @str: string to be tokenised
+ * @delims: delimiters
+ * Return: NULL terminated array of pointer to strings
+ * else, NULL
  */
 
-int main(int argc, char **argv)
+char **tokenise(int ntokens, char *cmdline, char *delims)
 {
-	char *str;
-	char *tok;
+	int pos;
+	char *str = strdup(cmdline);
+	char *token;
+	char **tokens;
 
-	if (argc != 3)
-	{
-		fprintf(stderr, "Usage: %s string delim", argv[0]);
-		exit(EXIT_FAILURE);
-	}
-	for (str = argv[1]; ; str = NULL)
-	{
-		tok = strtok(str, argv[2]);
-		if (tok == NULL)
-			break;
-		printf("%s\n", tok);
-	}
+	tokens = malloc(sizeof(char) * (ntokens + 2));
+	if (tokens == NULL)
+		return (NULL);
 
-	return (0);
+	token = strtok(str, delims);
+
+	for (pos = 0; pos < _strlen(str) && token != NULL; pos++)
+	{
+		tokens[pos] = strdup(token); /* build an array of arguments*/
+
+		token = strtok(NULL, " \n"); /* terminate it*/
+
+
+	}
+	tokens[pos] = NULL;
+	free(str);
+	return(tokens);
+
+}
+
+int ntokens(char *cmdline, char *delims)
+{
+	int count;
+	char *str = strdup(cmdline);
+	char *token;
+	if (str == NULL)
+		return (-1);
+	token = strtok(str, delims);
+	for (count = 0; token != NULL; count++)
+	{
+		token = strtok(NULL, delims);
+	}
+	free(str);
+	return(count);
 }

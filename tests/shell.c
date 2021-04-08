@@ -46,3 +46,12 @@ void def_prompt(void)
 {
 	write(1, "hello@mus:~$ ", 14);
 }
+
+/**
+  *tokenise - break string into different parts
+  *@str: string to be split.
+  *@delims: where to break the string.
+  *
+  *Return: array of strings.
+  */
+char **tokenise(char *str, *

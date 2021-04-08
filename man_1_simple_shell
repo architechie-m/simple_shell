@@ -2,7 +2,7 @@
 .SH NAME
 simple_shell - This is a simple unix command interpreter.
 .SH SYNOPSIS
-
+Shell intreprets and executes command line arguments read from the standard input
 .SH DESCRIPTION
 
 .SH BUGS
@@ -10,7 +10,7 @@ simple_shell - This is a simple unix command interpreter.
 .SH AUTHORS
 .PP
 .RS
-NAME: 
+NAME:
 .B MUCHAMI NGOTHO
 .RS i
 EMAIL:
@@ -20,7 +20,7 @@ EMAIL:
 
 .PP
 .RS
-NAME: 
+NAME:
 .B SILVIA MUSANGI
 .RS i
 EMAIL:
