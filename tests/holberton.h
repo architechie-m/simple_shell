@@ -10,5 +10,5 @@
 #include <sys/types.h>
 /**/
 void def_prompt(void);
-
+void about(char *msg);
 #endif /* HOLBERTON_H */
