@@ -2,7 +2,7 @@
 
 int main(int __attribute__((unused))argc,  char **argv)
 {
-	int count;
+	int count, i;
 	size_t len = 0;
 	char *line = NULL;
 	pid_t pid;
@@ -14,28 +14,37 @@ int main(int __attribute__((unused))argc,  char **argv)
 
 		if (getline(&line, &len, stdin) == -1)
 			break;
-
+		
 		count = ntokens(line, delims);
 
 		tokens = tokenise(count, line, delims);
-
-
+		if (strcmp(tokens[0], "exit\n") == 0)
+			break;
+		if (tokens[0] == '\0' || strcmp(tokens, "\n") == 0)
+		{
+			continue;
+		}
 		pid = Fork();
 		if (pid == 0)
 		{
 			if (execve(tokens[0], tokens, NULL) == -1)
 			{
+				i = 0;
+				while (count >= 0)
+				{
+					free(tokens[i]);
+					count--;
+					i++;
+				}
 				free(tokens);
 				free(line);
 				perror(argv[0]);
 				exit(EXIT_FAILURE);
 			}
-			exit(0);
 		}
 
 		else
 			wait(NULL);
-
 
 	}
 	free(tokens);

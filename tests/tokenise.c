@@ -16,9 +16,12 @@ char **tokenise(int ntokens, char *cmdline, char *delims)
 	char *token;
 	char **tokens;
 
-	tokens = malloc(sizeof(char) * (ntokens + 2));
+	tokens = malloc(sizeof(char) * (ntokens + 1));
 	if (tokens == NULL)
+	{
+		free(tokens);
 		return (NULL);
+	}
 
 	token = strtok(str, delims);
 
@@ -49,5 +52,6 @@ int ntokens(char *cmdline, char *delims)
 		token = strtok(NULL, delims);
 	}
 	free(str);
+	free(token);
 	return(count);
 }
