@@ -29,10 +29,13 @@ int getpath(char **cmd, char **argv)
 	j = 1;
 	while (tokens[j] != NULL)
 	{
+		if (_strcmp(cmd[0], "exit") == 0)
+			exit(0);
 		if (cmd[0][0] == '/')
 			wd = cmd[0];
 		else
 		{
+		/*	_strcpy(slash, "/"); */
 			_strcat(tokens[j], "/");
 			wd = _strcat(tokens[j], cmd[0]);
 		}
@@ -44,6 +47,7 @@ int getpath(char **cmd, char **argv)
 		write(STDERR_FILENO, argv[0], _strlen(argv[0]));
 		write(STDERR_FILENO, ": ", 2);
 		perror(cmd[0]);
+		free_dptr(tokens);
 	}
 	return (0);
 }
