@@ -10,13 +10,11 @@ int main()
 
 	int count;
 	int i, j, k;
-	char **tokens = NULL;
+	char **tokens = NULL, *cmd[] = {"env", NULL};
 	char path[] = "PATH";
 	int len = strlen(path);
-	char delims[] = {":"};
+	char delims[] = {"=:"};
 	char *path2 = NULL;
-	char *buf = NULL;
-	size_t n = 0;
 
 	for (i = 0; environ[i] != NULL; i++)
 	{
@@ -35,17 +33,15 @@ int main()
 	}
 	count = ntokens(path2, delims);
 	tokens = tokenise(count, path2, delims);
+	j = 0;
 	while (tokens[j] != NULL)
 	{
-		printf("%s\n", tokens[j]);
-		j++;
+		wd = strcat(tokens[j + 1], "/env");
+		execve(wd, cmd, environ);
+
+		j++;		
 	}
 
-
-	wd = getcwd(buf, n);
-	chdir(tokens[j - 1]);
-
-	execve(tokens[j - 1], tokens, NULL);
 
 	wait(NULL);
 	free(wd);
