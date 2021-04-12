@@ -16,6 +16,12 @@ char *read_line(void)
 			free(line);
 			exit(EXIT_SUCCESS);
 		}
+		else
+		{
+			free(line);
+			perror("readline");
+			exit(EXIT_FAILURE);
+		}
 	}
 	return (line);
 

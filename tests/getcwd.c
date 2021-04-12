@@ -3,14 +3,14 @@
 extern char **environ;
 
 /**
-  *getpath - append path to command.
+  *getpath - append pathi to command.
   */
 
 int getpath(char **cmd, char **argv)
 {
 	char *wd;
 	int count, i, j, k;
-	char **tokens = NULL, path[] = "PATH";
+	char **tokens = NULL, path[] = "PATH", *temp;
 	int len = _strlen(path);
 	char delims[] = {"=:"}, *path2 = NULL;
 
@@ -29,15 +29,21 @@ int getpath(char **cmd, char **argv)
 	j = 1;
 	while (tokens[j] != NULL)
 	{
-		if (_strcmp(cmd[0], "exit") == 0)
-			exit(0);
 		if (cmd[0][0] == '/')
 			wd = cmd[0];
 		else
 		{
-		/*	_strcpy(slash, "/"); */
-			_strcat(tokens[j], "/");
-			wd = _strcat(tokens[j], cmd[0]);
+			temp = malloc(sizeof(char *) *
+				(1 + sizeof(tokens[j]) +
+				 sizeof(cmd[0])));
+			if (temp == NULL)
+			{
+				free(temp);
+				return (-1);
+			}
+			_strcpy(temp, tokens[j]);
+			_strcat(temp, "/");
+			wd = _strcat(temp, cmd[0]);
 		}
 		i = execve(wd, cmd, environ);
 		j++;		
@@ -47,7 +53,10 @@ int getpath(char **cmd, char **argv)
 		write(STDERR_FILENO, argv[0], _strlen(argv[0]));
 		write(STDERR_FILENO, ": ", 2);
 		perror(cmd[0]);
+		free(temp);
 		free_dptr(tokens);
+		return (-1);
 	}
+	free_dptr(tokens);
 	return (0);
 }

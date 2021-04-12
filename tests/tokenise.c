@@ -17,7 +17,7 @@ char **tokenise(int ntokens, char *cmdline, char *delims)
 	char *token;
 	char **tokens;
 
-	tokens = malloc(sizeof(char *) * (ntokens + 1));
+	tokens = malloc(sizeof(char **) * (ntokens + 1));
 	if (tokens == NULL)
 	{
 		free_dptr(tokens);
