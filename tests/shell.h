@@ -27,5 +27,7 @@ int _strcmp(char *s1, char *s2);
 char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
 char *_strdup(char *src);
+void execute(char **tokens, char **argv);
+void getpath(char **, char **);
 
 #endif /*SHELL_H*/
