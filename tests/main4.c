@@ -1,6 +1,5 @@
 #include "shell.h"
 
-extern char **environ;
 
 int main(int __attribute__((unused))argc,  char **argv)
 {
@@ -17,20 +16,23 @@ int main(int __attribute__((unused))argc,  char **argv)
 		def_prompt();
 
 		line = read_line();
-		if(line == NULL)
-			break;
-		if (_strcmp(line, "exit\n") == 0)
-			break;
 
 		count = ntokens(line, delims);
 
 		tokens = tokenise(count, line, delims);
 
+		if (_strcmp(line, "exit\n") == 0)
+			break;
+
 		pid = Fork();
 		if (pid == 0)
-			getpath(tokens, argv);
+		{
+			if (getpath(tokens, argv) == -1)
+				break;
+		}
 		else
 			wait(NULL);
+
 		free(line);
 		free_dptr(tokens);
 

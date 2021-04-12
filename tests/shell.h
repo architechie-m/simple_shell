@@ -28,6 +28,6 @@ char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
 char *_strdup(char *src);
 void execute(char **tokens, char **argv);
-void getpath(char **, char **);
+int getpath(char **, char **);
 
 #endif /*SHELL_H*/

@@ -3,10 +3,10 @@
 extern char **environ;
 
 /**
-  *getpath - get path of argument
+  *getpath - append path to command.
   */
 
-void getpath(char **cmd, char **argv)
+int getpath(char **cmd, char **argv)
 {
 	char *wd;
 	int count, i, j, k;
@@ -45,5 +45,5 @@ void getpath(char **cmd, char **argv)
 		write(STDERR_FILENO, ": ", 2);
 		perror(cmd[0]);
 	}
-
+	return (0);
 }
