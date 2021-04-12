@@ -1,56 +1,49 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
 #include "shell.h"
 
 extern char **environ;
-int main()
+
+/**
+  *getpath - get path of argument
+  */
+
+void getpath(char **cmd, char **argv)
 {
 	char *wd;
-
-	int count;
-	int i, j, k;
-	char **tokens = NULL;
-	char path[] = "PATH";
-	int len = strlen(path);
-	char delims[] = {":"};
-	char *path2 = NULL;
-	char *buf = NULL;
-	size_t n = 0;
+	int count, i, j, k;
+	char **tokens = NULL, path[] = "PATH";
+	int len = _strlen(path);
+	char delims[] = {"=:"}, *path2 = NULL;
 
 	for (i = 0; environ[i] != NULL; i++)
 	{
 		for (k = 0; k < len; k++)
 		{
 			if (environ[i][k] != path[k])
-			{
 				break;
-			}
 		}
 		if (k == len && environ[i][k] == '=')
-		{
-			printf("%s", environ[i]);
 			path2 = environ[i];
-		}
 	}
 	count = ntokens(path2, delims);
-	tokens = tokenise(count, path2, delims);
+	tokens = tokenise(count, path2, delims);	
+	j = 1;
 	while (tokens[j] != NULL)
 	{
-		printf("%s\n", tokens[j]);
-		j++;
+		if (cmd[0][0] == '/')
+			wd = cmd[0];
+		else
+		{
+			_strcat(tokens[j], "/");
+			wd = _strcat(tokens[j], cmd[0]);
+		}
+		i = execve(wd, cmd, environ);
+		j++;		
 	}
-
-
-	wd = getcwd(buf, n);
-	chdir(tokens[j - 1]);
-
-	execve(tokens[j - 1], tokens, NULL);
-
-	wait(NULL);
-	free(wd);
-	return (0);
-
-
+ 	if (!tokens[j] && i == -1)
+	{
+		write(STDERR_FILENO, argv[0], _strlen(argv[0]));
+		write(STDERR_FILENO, ": ", 2);
+		perror(cmd[0]);
+	}
 
 }
