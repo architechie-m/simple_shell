@@ -24,6 +24,8 @@ char *getpath(void)
 	}
 	return (path2);
 }
+
+
 int build_exec(char **cmd, char **argv)
 {
 	char *wd;
@@ -65,11 +67,6 @@ int build_exec(char **cmd, char **argv)
 		free(temp);
 		free_dptr(tokens);
 		return (-1);
-	}
-	else if (i == -1)
-	{
-		free(temp);
-                free_dptr(tokens);
 	}
 	free_dptr(tokens);
 	free(temp);
