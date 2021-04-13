@@ -1,7 +1,7 @@
 #include "shell.h"
 /**
   *inthandler - handles ^C.
-  *@n: signal passed.
+  *@sig: signal passed.
   *
   *Return: void.
   */
