@@ -28,7 +28,8 @@ char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
 char *_strdup(char *src);
 void execute(char **tokens, char **argv);
-int getpath(char **, char **);
+char *getpath(void);
+int build_exec(char **cmd,  char **argv);
 int builtin(char **);
 
 #endif /*SHELL_H*/
