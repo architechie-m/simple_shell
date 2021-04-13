@@ -18,6 +18,7 @@ int main(int __attribute__((unused))argc,  char **argv)
 	while (1)
 	{
 		def_prompt();
+		signal(SIGINT, SIG_IGN);
 
 		line = read_line();
 
@@ -32,7 +33,7 @@ int main(int __attribute__((unused))argc,  char **argv)
 			pid = Fork();
 			if (pid == 0)
 			{
-				if (getpath(tokens, argv) == -1)
+				if (build_exec(tokens, argv) == -1)
 					break;
 			}
 			else

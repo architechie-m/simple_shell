@@ -19,9 +19,9 @@ char *read_line(void)
 		else
 		{
 			free(line);
-			perror("readline");
 			exit(EXIT_FAILURE);
 		}
+		free(line);
 	}
 	return (line);
 
