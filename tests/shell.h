@@ -29,5 +29,6 @@ char *_strcat(char *dest, char *src);
 char *_strdup(char *src);
 void execute(char **tokens, char **argv);
 int getpath(char **, char **);
+int builtin(char **);
 
 #endif /*SHELL_H*/

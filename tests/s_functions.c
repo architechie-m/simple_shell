@@ -66,25 +66,42 @@ char *_strcpy(char *dest, char *src)
 	return (dest);
 }
 
-
+/**
+  *_strdup - duplicate string in memory.
+  *@src: string.
+  *
+  *Return: pointer to string.
+  */
 char *_strdup(char *src)
 {
-    char *str;
-    char *p;
-    int len = 0;
+	char *str;
+	char *p;
+	int len = 0;
+	
+	len = _strlen(src);
+	str = malloc(len + 1);
+	if (str == NULL)
+	{
+		free(str);
+		return (NULL);
+	}
+	p = str;
+	while (*src)
+		*p++ = *src++;
+	*p = '\0';
+	return (str);
+}
 
-    len = _strlen(src);
+/**
+  *_strlen - returns length of string.
+  *@str: string.
+  *Return: length of string.
+  */
+int _strlen(char *str)
+{
+        int len = 0;
 
-    str = malloc(len + 1);
-    if (str == NULL)
-    {
-	    free(str);
-	    return(NULL);
-    }
-    p = str;
-
-    while (*src)
-	    *p++ = *src++;
-    *p = '\0';
-    return str;
+        while (*(str + len) != '\0')
+                len++;
+	return (len);
 }

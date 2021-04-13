@@ -1,16 +1,20 @@
 #include "shell.h"
-
-
+/**
+  *main - simple unix command line interpreter.
+  *@argc: argument count.
+  *@argv: argument vector.
+  *
+  *Return: success.
+  */
 int main(int __attribute__((unused))argc,  char **argv)
 {
 	int count;
 	pid_t pid;
-	char **tokens;/* create an array of tokens from the split tokens, and allocate some memory*/
+	char **tokens;
 	char *delims = " ,\n\t\r;";
 	char *line = NULL;
-	
-	(void)argv;
 
+	(void)argv;
 	while (1)
 	{
 		def_prompt();
@@ -21,21 +25,23 @@ int main(int __attribute__((unused))argc,  char **argv)
 
 		tokens = tokenise(count, line, delims);
 
-		if (_strcmp(line, "exit\n") == 0)
-			break;
-
-		pid = Fork();
-		if (pid == 0)
+		if (_strcmp(line, "\n") == 0)
+			continue;
+		if (builtin(tokens) == 1)
 		{
-			if (getpath(tokens, argv) == -1)
-				break;
+			pid = Fork();
+			if (pid == 0)
+			{
+				if (getpath(tokens, argv) == -1)
+					break;
+			}
+			else
+				wait(NULL);
 		}
 		else
-			wait(NULL);
+			break;
 
-		free(line);
-		free_dptr(tokens);
-
+		free(line), free_dptr(tokens);
 	}
 	free_dptr(tokens);
 	free(line);

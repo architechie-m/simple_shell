@@ -2,9 +2,9 @@
 #include <string.h>
 
 /**
- * main - entry point, program starts here
+ * tokenise - entry point, program starts here
  * @ntokens: Number of tokens in an array
- * @str: string to be tokenised
+ * @cmdline: string to be tokenised
  * @delims: delimiters
  * Return: NULL terminated array of pointer to strings
  * else, NULL
@@ -17,7 +17,7 @@ char **tokenise(int ntokens, char *cmdline, char *delims)
 	char *token;
 	char **tokens;
 
-	tokens = malloc(sizeof(char *) * (ntokens + 1));
+	tokens = malloc(sizeof(char **) * (ntokens + 1));
 	if (tokens == NULL)
 	{
 		free_dptr(tokens);
@@ -35,15 +35,21 @@ char **tokenise(int ntokens, char *cmdline, char *delims)
 	}
 	tokens[pos] = NULL;
 	free_sptr(2, str, token);
-	return(tokens);
-
+	return (tokens);
 }
-
+/**
+  *ntokens - counts number of tokens in cmdline.
+  *@cmdline: user input.
+  *@delims: characters present in input used to break input into tokens.
+  *
+  *Return: number of tokens.
+  */
 int ntokens(char *cmdline, char *delims)
 {
 	int count;
 	char *str = _strdup(cmdline);
 	char *token;
+
 	if (str == NULL)
 	{
 		return (-1);
@@ -55,5 +61,5 @@ int ntokens(char *cmdline, char *delims)
 	}
 
 	free_sptr(2, str, token);
-	return(count);
+	return (count);
 }
