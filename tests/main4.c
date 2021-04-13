@@ -23,20 +23,23 @@ int main(int __attribute__((unused))argc,  char **argv)
 		tokens = tokenise(count, line, delims);
 		if (_strcmp(line, "\n") == 0)
 			continue;
-		if (builtin(tokens) == 1)
+
+		if (exit_1(tokens) == 1)
 		{
-			pid = Fork();
-			if (pid == 0)
+			if (compare(tokens) != 1)
 			{
-				if (build_exec(tokens, argv) == -1)
-					break;
+				pid = Fork();
+				if (pid == 0)
+				{
+					if (build_exec(tokens, argv) == -1)
+						break;
+				}
+				else
+					wait(NULL);
 			}
-			else
-				wait(NULL);
 		}
 		else
 			break;
-
 		free(line), free_dptr(tokens);
 	}
 	free_dptr(tokens);
