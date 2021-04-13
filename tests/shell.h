@@ -8,6 +8,7 @@
 #include <errno.h>
 #include<sys/wait.h>
 #include<stdarg.h>
+#include <signal.h>
 
 extern char **environ;
 
@@ -30,5 +31,5 @@ char *_strdup(char *src);
 void execute(char **tokens, char **argv);
 int getpath(char **, char **);
 int builtin(char **);
-
+void inthandler(int);
 #endif /*SHELL_H*/

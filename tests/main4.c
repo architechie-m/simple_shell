@@ -13,18 +13,13 @@ int main(int __attribute__((unused))argc,  char **argv)
 	char **tokens;
 	char *delims = " ,\n\t\r;";
 	char *line = NULL;
-
-	(void)argv;
+	
+	signal(SIGINT, inthandler);
 	while (1)
 	{
-		def_prompt();
-
-		line = read_line();
-
+		def_prompt(), line = read_line();
 		count = ntokens(line, delims);
-
 		tokens = tokenise(count, line, delims);
-
 		if (_strcmp(line, "\n") == 0)
 			continue;
 		if (builtin(tokens) == 1)
