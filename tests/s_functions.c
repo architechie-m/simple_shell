@@ -92,11 +92,16 @@ char *_strdup(char *src)
 	return (str);
 }
 
-int builtin(char **tokens)
+/**
+  *_strlen - returns length of string.
+  *@str: string.
+  *Return: length of string.
+  */
+int _strlen(char *str)
 {
-	if (!_strcmp(tokens[0], "exit"))
-	{
-		return (0);
-	}
-	return (1);
+        int len = 0;
+
+        while (*(str + len) != '\0')
+                len++;
+	return (len);
 }
