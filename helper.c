@@ -66,27 +66,20 @@ int exit_1(char **tokens)
 int cd(char **tokens)
 {
 	int x, count;
-	char **dirs = NULL, *delims = "/";
 
 	char __attribute__((unused)) *dir;
-	char *buf = NULL, *new_wd, home[] = "/home/", *home2;
+	char *delims = "=";
+	char *buf = NULL, path_name[] = "HOME", **path_tokens = NULL;
 	size_t size = 0;
+	char *path = getpath(path_name);
+
+	count = ntokens(path, delims);
+	path_tokens = tokenise(count, path, delims);
 
 	if (tokens[1] == NULL)
 	{
-		new_wd = getcwd(buf, size);
-		count = ntokens(new_wd, delims);
-		dirs = tokenise(count, new_wd, delims);
-		home2 = malloc(sizeof(char *) * (sizeof(home) + sizeof(dirs)));
-		if (home2 == NULL)
-		{
-			free(home2), free_dptr(tokens);
-			free_dptr(dirs);
-		}
-		_strcpy(home2, home);
-		_strcat(home2, dirs[1]);
-		chdir(home2);
-		free(home2), free_dptr(dirs);
+		chdir(path_tokens[1]);
+		free_dptr(path_tokens);
 		return (0);
 	}
 	else
@@ -95,14 +88,12 @@ int cd(char **tokens)
 		x = (chdir(tokens[1]));
 		if (x == -1)
 		{
-			write(STDERR_FILENO, tokens[0], sizeof(tokens[0]));
-			write(STDERR_FILENO, ": ", 2);
-			perror(tokens[1]);
+			perror("Error");
+			free_dptr(path_tokens);
 			return (0);
 		}
-
+		free_dptr(path_tokens);
 	}
-	free_dptr(tokens);
 	return (0);
 }
 
