@@ -12,6 +12,7 @@ int (*builtin_f[]) (char **) = { &help, &cd};
 pid_t Fork(void)
 {
 	pid_t pid = fork();
+
 	if (pid < 0)
 		perror("Fork error");
 	return (pid);
@@ -19,13 +20,13 @@ pid_t Fork(void)
 
 /**
  * num - Calculates the number of builtin functions
- *
+ * @built: array of builtin commands
  * Return: the number of builtin functions
  */
 
 int num(char *built[])
 {
-	return(sizeof(built) / sizeof(char *));
+	return (sizeof(built) / sizeof(char *));
 }
 /**
  * help - Writes simple_shell instructions to stdout
@@ -36,7 +37,7 @@ int num(char *built[])
 
 int help(char __attribute__((unused)) **tokens)
 {
-	write(STDOUT_FILENO, "simple shell\n", 17);
+	write(STDOUT_FILENO, "simple shell\n", 14);
 	return (1);
 }
 
@@ -65,43 +66,38 @@ int exit_1(char **tokens)
 int cd(char **tokens)
 {
 	int x, count;
-	char **dirs = NULL, *delims = "/";
+
 	char __attribute__((unused)) *dir;
-	char *buf = NULL, *new_wd, home[] = "/home/", *home2;
+	char *delims = "=";
+	char *buf = NULL, path_name[] = "HOME", **path_tokens = NULL;
 	size_t size = 0;
+	char *path = getpath(path_name);
+
+	count = ntokens(path, delims);
+	path_tokens = tokenise(count, path, delims);
 
 	if (tokens[1] == NULL)
-        {
-		new_wd = getcwd(buf, size);
-		count = ntokens(new_wd, delims);
-		dirs = tokenise(count, new_wd, delims);
-		home2 = malloc(sizeof(home) + sizeof(dirs[1]));
-		if(home2 == NULL)
-		{
-			free(home2);
-			free_dptr(tokens);
-			free_dptr(dirs);
-		}
-		_strcpy(home2, home);
-		_strcat(home2, dirs[1]);
-		chdir(home2), free(home2), free_dptr(dirs);
-		return(0);
+	{
+		chdir(path_tokens[1]);
+		free_dptr(path_tokens);
+		return (0);
 	}
 	else
 	{
 		dir = getcwd(buf, size);
-
 		x = (chdir(tokens[1]));
 		if (x == -1)
 		{
 			perror("Error");
-			return(0);
-			free_dptr(tokens);
-		}
+			free_dptr(path_tokens);
+			return (0);
 
+		}
+		free_dptr(path_tokens);
 	}
+
 	return (0);
-	free_dptr(tokens), free(home2);
+
 }
 
 /**
@@ -119,14 +115,14 @@ int compare(char **tokens)
 	int size = num(builtin);
 
 	if (tokens == NULL)
-		return(-1);
+		return (-1);
 
 	for (i = 0; i <= size; i++)
 	{
 		if (_strcmp(tokens[0], builtin[i]) == 0)
 		{
 			(*builtin_f[i])(tokens);
-			return 1;
+			return (1);
 		}
 	}
 	return (0);
