@@ -77,18 +77,16 @@ int cd(char **tokens)
 		new_wd = getcwd(buf, size);
 		count = ntokens(new_wd, delims);
 		dirs = tokenise(count, new_wd, delims);
-		home2 = malloc(sizeof(home) + sizeof(dirs[1]));
+		home2 = malloc(sizeof(char *) * (sizeof(home) + sizeof(dirs)));
 		if (home2 == NULL)
 		{
-			free(home2);
-			free_dptr(tokens);
+			free(home2), free_dptr(tokens);
 			free_dptr(dirs);
 		}
 		_strcpy(home2, home);
 		_strcat(home2, dirs[1]);
 		chdir(home2);
-		free(home2);
-		free_dptr(dirs);
+		free(home2), free_dptr(dirs);
 		return (0);
 	}
 	else
@@ -97,14 +95,15 @@ int cd(char **tokens)
 		x = (chdir(tokens[1]));
 		if (x == -1)
 		{
-			perror("Error");
+			write(STDERR_FILENO, tokens[0], sizeof(tokens[0]));
+			write(STDERR_FILENO, ": ", 2);
+			perror(tokens[1]);
 			return (0);
-			free_dptr(tokens);
 		}
 
 	}
+	free_dptr(tokens);
 	return (0);
-	free_dptr(tokens), free(home2);
 }
 
 /**
