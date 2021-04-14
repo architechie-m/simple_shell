@@ -121,7 +121,7 @@ int compare(char **tokens)
 	if (tokens == NULL)
 		return(-1);
 
-	for (i = 0; i < size; i++)
+	for (i = 0; i <= size; i++)
 	{
 		if (_strcmp(tokens[0], builtin[i]) == 0)
 		{
