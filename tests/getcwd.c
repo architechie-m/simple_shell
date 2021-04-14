@@ -53,10 +53,7 @@ int getpath(char **cmd, char **argv)
 		write(STDERR_FILENO, argv[0], _strlen(argv[0]));
 		write(STDERR_FILENO, ": ", 2);
 		perror(cmd[0]);
-		free(temp);
-		free_dptr(tokens);
 		return (-1);
 	}
-	free_dptr(tokens);
 	return (0);
 }
