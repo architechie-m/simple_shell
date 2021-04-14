@@ -1,13 +1,13 @@
 #include "shell.h"
 /**
  * getpath -  finds PATH environment variable
+ * @path: environment variable
  * Return: Returns PATH upo success
  */
 
-char *getpath(void)
+char *getpath(char path[])
 {
 	int i, k;
-	char path[] = "PATH";
 	int len = _strlen(path);
 	char *path2 = NULL;
 
@@ -32,9 +32,10 @@ char *getpath(void)
 
 int build_exec(char **cmd, char **argv)
 {
+	char path[] = "PATH";
 	int count, i, j = 1;
 	char *wd, delims[] = {"=:"};
-	char *path2 = (getpath()), **tokens = NULL, *temp;
+	char *path2 = (getpath(path)), **tokens = NULL, *temp;
 
 	count = ntokens(path2, delims);
 	tokens = tokenise(count, path2, delims);
@@ -69,7 +70,6 @@ int build_exec(char **cmd, char **argv)
 		free_dptr(tokens);
 		return (-1);
 	}
-	free_dptr(tokens);
-	free(temp);
+	free_dptr(tokens), free(temp);
 	return (0);
 }
