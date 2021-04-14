@@ -8,17 +8,24 @@
   */
 int main(int __attribute__((unused))argc,  char **argv)
 {
+
 	int count;
 	pid_t pid;
 	char **tokens;
 	char *delims = " ,\n\t\r;";
 	char *line = NULL;
+	size_t len = 0;
 
 	signal(SIGINT, inthandler);
 
 	while (1)
 	{
-		def_prompt(), line = read_line();
+		def_prompt();
+		if (getline(&line, &len, stdin) == -1)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			break;
+		}
 
 		count = ntokens(line, delims);
 		tokens = tokenise(count, line, delims);
@@ -40,10 +47,15 @@ int main(int __attribute__((unused))argc,  char **argv)
 			}
 		}
 		else
-			break;
-		free(line), free_dptr(tokens);
+		{
+			free(line);
+			free_dptr(tokens);
+			exit(0);
+		}
+		free_dptr(tokens);
+
 	}
-	free_dptr(tokens);
+
 	free(line);
-	exit(EXIT_SUCCESS);
+	return (0);
 }
