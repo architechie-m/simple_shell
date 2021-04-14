@@ -36,11 +36,16 @@ char *_strcat(char *dest, char *src);
 char *_strdup(char *src);
 void execute(char **tokens, char **argv);
 char *getpath(char path[]);
-int build_exec(char **cmd,  char **argv);
+int build_exec(char **cmd);
 void inthandler(int);
 void def_prompt2(void);
+int print_number(int n);
+int _putchar(char c);
+void print_err(char *argv, int sum, char *tokens);
 
 /* global variables */
+
+
 extern int (*builtin_f[]) (char **);
 
 #endif /*SHELL_H*/
