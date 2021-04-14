@@ -8,6 +8,7 @@
 #include <errno.h>
 #include<sys/wait.h>
 #include<stdarg.h>
+#include <signal.h>
 
 extern char **environ;
 
@@ -16,7 +17,11 @@ void def_prompt(void);
 
 char **tokenise(int ntokens, char *cmdline, char *delims);
 int ntokens(char *cmdline, char *delims);
-
+int help(char **tokens);
+int cd(char **tokens);
+int num(char *built[]);
+int compare(char **tokens);
+int exit_1(char **tokens);
 /* wrapper function for fork */
 pid_t Fork(void);
 int _strlen(char *str);
@@ -30,6 +35,10 @@ char *_strdup(char *src);
 void execute(char **tokens, char **argv);
 char *getpath(void);
 int build_exec(char **cmd,  char **argv);
-int builtin(char **);
+void inthandler(int);
+void def_prompt2(void);
+
+/* global variables */
+extern int (*builtin_f[]) (char **);
 
 #endif /*SHELL_H*/
