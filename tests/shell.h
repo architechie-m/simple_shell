@@ -17,7 +17,11 @@ void def_prompt(void);
 
 char **tokenise(int ntokens, char *cmdline, char *delims);
 int ntokens(char *cmdline, char *delims);
-
+int help(char **tokens);
+int cd(char **tokens);
+int num(char *built[]);
+int compare(char **tokens);
+int exit_1(char **tokens);
 /* wrapper function for fork */
 pid_t Fork(void);
 int _strlen(char *str);
@@ -29,7 +33,12 @@ char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
 char *_strdup(char *src);
 void execute(char **tokens, char **argv);
-int getpath(char **, char **);
-int builtin(char **);
+char *getpath(void);
+int build_exec(char **cmd,  char **argv);
 void inthandler(int);
+void def_prompt2(void);
+
+/* global variables */
+extern int (*builtin_f[]) (char **);
+
 #endif /*SHELL_H*/

@@ -21,10 +21,10 @@ void free_sptr(int n, ...)
 	va_end(list);
 }
 /**
-  *free_dptr - frees array of strings.
-  *@str: array of strings.
-  *Return: void.
-  */
+ *free_dptr - frees array of strings.
+ *@str: array of strings.
+ *Return: void.
+ */
 void free_dptr(char **str)
 {
 	int i;

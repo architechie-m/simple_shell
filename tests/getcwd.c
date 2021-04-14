@@ -1,32 +1,43 @@
 #include "shell.h"
-
-extern char **environ;
-
 /**
-  *getpath - append pathi to command.
-  */
+ * getpath -  finds PATH environment variable
+ * Return: Returns PATH upo success
+ */
 
-int getpath(char **cmd, char **argv)
+char *getpath(void)
 {
-	char *wd;
-	int count, i, j, k;
-	char **tokens = NULL, path[] = "PATH", *temp;
+	int i, k;
+	char path[] = "PATH";
 	int len = _strlen(path);
-	char delims[] = {"=:"}, *path2 = NULL;
+	char *path2 = NULL;
 
 	for (i = 0; environ[i] != NULL; i++)
 	{
 		for (k = 0; k < len; k++)
-		{
 			if (environ[i][k] != path[k])
 				break;
-		}
 		if (k == len && environ[i][k] == '=')
 			path2 = environ[i];
 	}
+	return (path2);
+}
+/**
+ * build_exec - builds path for a command and executes it
+ * @cmd: command passed by the user
+ * @argv: command line argument, to print out error when command
+ * execution fails
+ *
+ * Return: Zero upon success
+ */
+
+int build_exec(char **cmd, char **argv)
+{
+	int count, i, j = 1;
+	char *wd, delims[] = {"=:"};
+	char *path2 = (getpath()), **tokens = NULL, *temp;
+
 	count = ntokens(path2, delims);
-	tokens = tokenise(count, path2, delims);	
-	j = 1;
+	tokens = tokenise(count, path2, delims);
 	while (tokens[j] != NULL)
 	{
 		if (cmd[0][0] == '/')
@@ -34,8 +45,8 @@ int getpath(char **cmd, char **argv)
 		else
 		{
 			temp = malloc(sizeof(char *) *
-				(1 + sizeof(tokens[j]) +
-				 sizeof(cmd[0])));
+				      (1 + sizeof(tokens[j]) +
+				       sizeof(cmd[0])));
 			if (temp == NULL)
 			{
 				free(temp);
@@ -46,14 +57,19 @@ int getpath(char **cmd, char **argv)
 			wd = _strcat(temp, cmd[0]);
 		}
 		i = execve(wd, cmd, environ);
-		j++;		
+		if (i == -1 && cmd[0][0] != '/')
+			free(temp);
+		j++;
 	}
- 	if (!tokens[j] && i == -1)
+	if (!tokens[j] && i == -1)
 	{
 		write(STDERR_FILENO, argv[0], _strlen(argv[0]));
-		write(STDERR_FILENO, ": ", 2);
+		write(STDERR_FILENO, ": ", 3);
 		perror(cmd[0]);
+		free_dptr(tokens);
 		return (-1);
 	}
+	free_dptr(tokens);
+	free(temp);
 	return (0);
 }
