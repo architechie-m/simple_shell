@@ -1,12 +1,20 @@
 .TH SIMPLE_SHELL 1 "7 APRIL 2021" "Muchami & Musangi Shell" "General User Guide"
 .SH NAME
-simple_shell - This is a simple unix command line interpreter.
+simple_shell - By Muchami & Musangi
 .SH SYNOPSIS
-This is a simple UNIX command line intrepreter.
+bash [command]
 .SH DESCRIPTION
-
+Simple_shell is a command line interpreter that executes commands read from the standard input.
+.SH BUILTIN COMMANDS
+.RS 3
+.RE
+exit - exits the shell
+.RE
+help - Retrieves information about simple_shell commands
+.RE
+cd - Changes directory
 .SH BUGS
-
+No known bugs
 .SH AUTHORS
 .PP
 .RS
