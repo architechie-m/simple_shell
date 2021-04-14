@@ -30,10 +30,10 @@ char *getpath(char path[])
  * Return: Zero upon success
  */
 
-int build_exec(char **cmd, char **argv)
+int build_exec(char **cmd)
 {
 	char path[] = "PATH";
-	int count, i, j = 1;
+	int i, count, j = 1;
 	char *wd, delims[] = {"=:"};
 	char *path2 = (getpath(path)), **tokens = NULL, *temp;
 
@@ -64,9 +64,6 @@ int build_exec(char **cmd, char **argv)
 	}
 	if (!tokens[j] && i == -1)
 	{
-		write(STDERR_FILENO, argv[0], _strlen(argv[0]));
-		write(STDERR_FILENO, ": ", 3);
-		perror(cmd[0]);
 		free_dptr(tokens);
 		return (-1);
 	}
