@@ -65,5 +65,5 @@ void print_err(char *argv, int sum, char *tokens)
 	write(STDOUT_FILENO, ": ", 2);
 	write(STDOUT_FILENO, tokens, (_strlen(tokens) + 1));
 	write(STDOUT_FILENO, ": ", 2);
-	write(STDOUT_FILENO, "not found\n ", 11);
+	write(STDOUT_FILENO, "not found", 9);
 }
