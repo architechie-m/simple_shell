@@ -11,19 +11,16 @@ int main(int __attribute__((unused))argc,  char **argv)
 	int pid, count, status = 1, i = 1, sum = 0;
 	char **tokens, *delims = " ,\n\t\r;", *line = NULL;
 	size_t len = 0;
-/*	if (checkfd(fp, argv) == 1)
-		exit(0); */
+
 	signal(SIGINT, inthandler);
-	while (status)
+	while (1)
 	{
 		status = isatty(STDIN_FILENO);
-
 		if (status == 1)
 			def_prompt();
 		if (getline(&line, &len, stdin) == -1)
 		{
-			/*write(STDOUT_FILENO, "\n", 1);*/
-			break;
+			write(STDOUT_FILENO, "\n", 1), exit(0);
 		}
 		count = ntokens(line, delims), tokens = tokenise(count, line, delims);
 		if (_strcmp(line, "\n") == 0)
@@ -33,7 +30,6 @@ int main(int __attribute__((unused))argc,  char **argv)
 			if (compare(tokens) != 1)
 			{
 				pid = Fork();
-
 				if (pid == 0)
 				{
 					if (build_exec(tokens) == -1)
@@ -48,7 +44,7 @@ int main(int __attribute__((unused))argc,  char **argv)
 		}
 		else
 			free(line), free_dptr(tokens), exit(0);
-		i++;
+		i++, free(line), free_dptr(tokens);
 	}
 	free(line), free_dptr(tokens);
 	exit(EXIT_SUCCESS);
@@ -72,42 +68,4 @@ void p_err(char *argv, int sum, int i, char *tokens)
 	write(STDOUT_FILENO, tokens, (_strlen(tokens) + 1));
 	write(STDOUT_FILENO, ": ", 2);
 	write(STDOUT_FILENO, "not found\n", 10);
-}
-
-/**
-  *checkfd - checks if file descriptor is an open file terminal
-  *@fd: descriptor.
-  *@argv: argument vector.
-  *Return: 0.
-  */
-int checkfd(int fd, char **argv)
-{
-	int j, k = 1, s = 0, pid1;
-	char **tokens1, *delims1 = " ,\n\t\r;", *line1 = NULL;
-	size_t len1 = 0;
-
-	if (!isatty(fd))
-	{
-		getline(&line1, &len1, stdin);
-		j = ntokens(line1, delims1), tokens1 = tokenise(j, line1, delims1);
-		if (exit_1(tokens1) == 1)
-		{
-			if (compare(tokens1) != 1)
-			{
-				pid1 = Fork();
-				if (pid1 == 0)
-				{
-					if (build_exec(tokens1) == -1)
-					{
-						p_err(argv[0], s, k, tokens1[0]);
-					}
-				}
-				else
-					wait(NULL);
-			}
-		}
-		free(line1), free_dptr(tokens1);
-		return (1);
-	}
-	return (0);
 }
