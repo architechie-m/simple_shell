@@ -31,7 +31,7 @@ char *getpath(char path[])
 int build_exec(char **cmd)
 {
 	char path[] = "PATH";
-	int count, i, j = 1;
+	int i, count, j = 1;
 	char *wd, delims[] = {"=:"};
 	char *path2 = (getpath(path)), **tokens = NULL, *temp;
 
