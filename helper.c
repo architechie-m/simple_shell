@@ -91,13 +91,10 @@ int cd(char **tokens)
 			perror("Error");
 			free_dptr(path_tokens);
 			return (0);
-
 		}
 		free_dptr(path_tokens);
 	}
-
 	return (0);
-
 }
 
 /**
