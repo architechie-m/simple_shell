@@ -42,7 +42,7 @@ void def_prompt2(void);
 int print_number(int n);
 int _putchar(char c);
 void p_err(char *argv, int sum, int i, char *tokens);
-int checkfd(FILE *fd, char **argv);
+int checkfd(int fd, char **argv);
 /* global variables */
 
 

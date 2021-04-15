@@ -8,11 +8,9 @@
   */
 int main(int __attribute__((unused))argc,  char **argv)
 {
-	int count, i = 1, sum = 0;
-	pid_t pid;
+	int pid, count, i = 1, sum = 0, fp = 1;
 	char **tokens, *delims = " ,\n\t\r;", *line = NULL;
 	size_t len = 0;
-	FILE *fp = stdin;
 
 	if (checkfd(fp, argv) == 1)
 		exit(0);
@@ -79,14 +77,14 @@ void p_err(char *argv, int sum, int i, char *tokens)
   *@argv: argument vector.
   *Return: 0.
   */
-int checkfd(FILE *fd, char **argv)
+int checkfd(int fd, char **argv)
 {
 	int j, k = 1, s = 0;
 	pid_t pid1;
 	char **tokens1, *delims1 = " ,\n\t\r;", *line1 = NULL;
 	size_t len1 = 0;
 
-	if (!isatty(fileno(fd)))
+	if (isatty(fd))
 	{
 		getline(&line1, &len1, stdin);
 		j = ntokens(line1, delims1), tokens1 = tokenise(j, line1, delims1);
