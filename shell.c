@@ -8,19 +8,21 @@
   */
 int main(int __attribute__((unused))argc,  char **argv)
 {
-	int pid, count, i = 1, sum = 0, fp = 1;
+	int pid, count, status = 1, i = 1, sum = 0;
 	char **tokens, *delims = " ,\n\t\r;", *line = NULL;
 	size_t len = 0;
-
-	if (checkfd(fp, argv) == 1)
-		exit(0);
+/*	if (checkfd(fp, argv) == 1)
+		exit(0); */
 	signal(SIGINT, inthandler);
-	while (1)
+	while (status)
 	{
-		def_prompt();
+		status = isatty(STDIN_FILENO);
+
+		if (status == 1)
+			def_prompt();
 		if (getline(&line, &len, stdin) == -1)
 		{
-			write(STDOUT_FILENO, "\n", 1);
+			/*write(STDOUT_FILENO, "\n", 1);*/
 			break;
 		}
 		count = ntokens(line, delims), tokens = tokenise(count, line, delims);
@@ -31,6 +33,7 @@ int main(int __attribute__((unused))argc,  char **argv)
 			if (compare(tokens) != 1)
 			{
 				pid = Fork();
+
 				if (pid == 0)
 				{
 					if (build_exec(tokens) == -1)
@@ -45,10 +48,10 @@ int main(int __attribute__((unused))argc,  char **argv)
 		}
 		else
 			free(line), free_dptr(tokens), exit(0);
-		i++, free_dptr(tokens);
+		i++;
 	}
-	free(line);
-	return (0);
+	free(line), free_dptr(tokens);
+	exit(EXIT_SUCCESS);
 }
 /**
  * p_err - prints out error to standard output
@@ -68,7 +71,7 @@ void p_err(char *argv, int sum, int i, char *tokens)
 	write(STDOUT_FILENO, ": ", 2);
 	write(STDOUT_FILENO, tokens, (_strlen(tokens) + 1));
 	write(STDOUT_FILENO, ": ", 2);
-	write(STDOUT_FILENO, "not found", 9);
+	write(STDOUT_FILENO, "not found\n", 10);
 }
 
 /**
@@ -79,12 +82,11 @@ void p_err(char *argv, int sum, int i, char *tokens)
   */
 int checkfd(int fd, char **argv)
 {
-	int j, k = 1, s = 0;
-	pid_t pid1;
+	int j, k = 1, s = 0, pid1;
 	char **tokens1, *delims1 = " ,\n\t\r;", *line1 = NULL;
 	size_t len1 = 0;
 
-	if (isatty(fd))
+	if (!isatty(fd))
 	{
 		getline(&line1, &len1, stdin);
 		j = ntokens(line1, delims1), tokens1 = tokenise(j, line1, delims1);
