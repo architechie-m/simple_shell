@@ -19,9 +19,7 @@ int main(int __attribute__((unused))argc,  char **argv)
 		if (status == 1)
 			def_prompt();
 		if (getline(&line, &len, stdin) == -1)
-		{
-			write(STDOUT_FILENO, "\n", 1), exit(0);
-		}
+			break;
 		count = ntokens(line, delims), tokens = tokenise(count, line, delims);
 		if (_strcmp(line, "\n") == 0)
 			continue;
@@ -34,7 +32,7 @@ int main(int __attribute__((unused))argc,  char **argv)
 				{
 					if (build_exec(tokens) == -1)
 					{
-						p_err(argv[0], sum, i, tokens[0]);
+						p_err(argv[0], sum, i, tokens[0]), free_dptr(tokens);
 						break;
 					}
 				}
@@ -43,11 +41,13 @@ int main(int __attribute__((unused))argc,  char **argv)
 			}
 		}
 		else
-			free(line), free_dptr(tokens), exit(0);
-		i++, free(line), free_dptr(tokens);
+		{
+			free_dptr(tokens);
+			break;
+		}
+		i++, free_dptr(tokens);
 	}
-	free(line), free_dptr(tokens);
-	exit(EXIT_SUCCESS);
+	free(line), exit(0);
 }
 /**
  * p_err - prints out error to standard output
