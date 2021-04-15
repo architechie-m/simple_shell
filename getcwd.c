@@ -24,8 +24,6 @@ char *getpath(char path[])
 /**
  * build_exec - builds path for a command and executes it
  * @cmd: command passed by the user
- * @argv: command line argument, to print out error when command
- * execution fails
  *
  * Return: Zero upon success
  */
