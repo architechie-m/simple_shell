@@ -17,26 +17,33 @@ char **tokenise(int ntokens, char *cmdline, char *delims)
 	char *token;
 	char **tokens;
 
-	tokens = malloc(sizeof(char **) * (ntokens + 1));
-	if (tokens == NULL)
-	{
-		free_dptr(tokens);
-		return (NULL);
-	}
-
 	token = strtok(str, delims);
 
-	for (pos = 0; token != NULL; pos++)
+	if (token)
 	{
-		tokens[pos] = _strdup(token); /* build an array of arguments*/
-		token = strtok(NULL, delims); /* terminate it*/
+		tokens = malloc(sizeof(char **) * (ntokens + 1));
+		if (tokens == NULL)
+		{
+			free_dptr(tokens);
+			return (NULL);
+		}
+
+		for (pos = 0; token != NULL; pos++)
+		{
+			tokens[pos] = _strdup(token); /* build an array of arguments*/
+			token = strtok(NULL, delims); /* terminate it*/
+		}
 
 
+
+		tokens[pos] = NULL;
+		free_sptr(2, str, token);
+		return (tokens);
 	}
-	tokens[pos] = NULL;
-	free_sptr(2, str, token);
-	return (tokens);
+	free(str);
+	return (NULL);
 }
+
 /**
   *ntokens - counts number of tokens in cmdline.
   *@cmdline: user input.
@@ -55,6 +62,12 @@ int ntokens(char *cmdline, char *delims)
 		return (-1);
 	}
 	token = strtok(str, delims);
+	if (token == NULL)
+	{
+		free(str);
+		return (-1);
+	}
+
 	for (count = 0; token != NULL; count++)
 	{
 		token = strtok(NULL, delims);

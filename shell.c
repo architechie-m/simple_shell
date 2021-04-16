@@ -19,9 +19,13 @@ int main(int __attribute__((unused))argc,  char **argv)
 		if (status == 1)
 			def_prompt();
 		if (getline(&line, &len, stdin) == -1)
+		{
 			break;
+		
+		}
 		count = ntokens(line, delims), tokens = tokenise(count, line, delims);
-		if (_strcmp(line, "\n") == 0)
+
+		if (_strcmp(line, "\n") == 0 || count == -1)
 			continue;
 		if (exit_1(tokens) == 1)
 		{
